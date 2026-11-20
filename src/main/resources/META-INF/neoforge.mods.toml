@@ -1,0 +1,49 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "jsn_phone"
+version = "0.1.0"
+displayName = "jsn-Phone"
+authors = "chigusa-jsn"
+description = '''
+マイクラの中で使えるスマートフォン。メッセージ・つぶやき・お知らせ・フレンドとレーダー・時計と天気・メモなど。
+シンプルボイスチャット・Lightman's Currency・jsn-Craft が入っていれば、電話・銀行・jsn-Craft アプリも使える。
+'''
+
+[[dependencies.jsn_phone]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jsn_phone]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+# あれば使う（なくても動く）
+[[dependencies.jsn_phone]]
+modId = "voicechat"
+type = "optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jsn_phone]]
+modId = "lightmanscurrency"
+type = "optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jsn_phone]]
+modId = "jsn_craft"
+type = "optional"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
