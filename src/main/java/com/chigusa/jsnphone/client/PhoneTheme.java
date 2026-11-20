@@ -19,6 +19,7 @@ public final class PhoneTheme {
             case "friend" -> 0xFF3A9AF0;
             case "call" -> 0xFFF0C040;
             case "sns", "like" -> 0xFF40A0F0;
+            case "bank" -> 0xFFE0B040;
             default -> 0xFFE0E0E0;
         };
     }

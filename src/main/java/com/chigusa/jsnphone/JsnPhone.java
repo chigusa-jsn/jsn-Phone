@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 /** jsn-Phone：マイクラの中のスマートフォン */
 @Mod(JsnPhone.MODID)
 public class JsnPhone {
+    public static final org.slf4j.Logger LOG = com.mojang.logging.LogUtils.getLogger();
     public static final String MODID = "jsn_phone";
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);

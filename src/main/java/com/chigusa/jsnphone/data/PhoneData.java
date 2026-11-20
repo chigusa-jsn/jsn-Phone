@@ -28,6 +28,7 @@ public class PhoneData extends SavedData {
         public Set<String> likes = new LinkedHashSet<>(); public long replyTo;
     }
     public static class News { public String text; public String kind; public long time; public String player; }
+    public static class BankLog { public String with; public long amount; public boolean in; public long time; public String note; }
     public static class Settings { public int theme = 0; public int wallpaper = 0; public boolean share = true; public boolean notify = true; }
 
     public static class Content {
@@ -42,6 +43,7 @@ public class PhoneData extends SavedData {
         public Map<String, Settings> settings = new HashMap<>();
         public Map<String, String> names = new HashMap<>();
         public Map<String, Long> newsRead = new HashMap<>();
+        public Map<String, List<BankLog>> bank = new HashMap<>();
     }
 
     public Content c = new Content();
@@ -84,6 +86,20 @@ public class PhoneData extends SavedData {
 
     public String name(String uuid) {
         return c.names.getOrDefault(uuid, "？？？");
+    }
+
+    public void addBankLog(String player, String with, long amount, boolean in, String note) {
+        if (c.bank == null) c.bank = new HashMap<>();
+        BankLog l = new BankLog();
+        l.with = with;
+        l.amount = amount;
+        l.in = in;
+        l.time = System.currentTimeMillis();
+        l.note = note;
+        List<BankLog> list = c.bank.computeIfAbsent(player, k -> new ArrayList<>());
+        list.add(0, l);
+        while (list.size() > 50) list.remove(list.size() - 1);
+        setDirty();
     }
 
     public void addNews(String text, String kind, String player) {

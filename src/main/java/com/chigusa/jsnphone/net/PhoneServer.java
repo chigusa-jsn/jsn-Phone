@@ -160,7 +160,7 @@ public final class PhoneServer {
     }
 
     /** メッセージを送れる相手：フレンドと、いまオンラインの人 */
-    static JsonArray people(ServerPlayer p, PhoneData d) {
+    public static JsonArray people(ServerPlayer p, PhoneData d) {
         String me = p.getStringUUID();
         JsonArray a = new JsonArray();
         java.util.LinkedHashSet<String> ids = new java.util.LinkedHashSet<>(d.friends(me));

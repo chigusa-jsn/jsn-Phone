@@ -39,10 +39,13 @@ neoForge {
 repositories {
     // 装飾品の枠（Curios API）：スマホを入れる「スマホ」の枠（なくても動く）
     maven { url = "https://maven.theillusivec4.top/" }
+    // シンプルボイスチャットのAPI：電話（なくても動く）
+    maven { url = "https://maven.maxhenkel.de/repository/public" }
 }
 
 dependencies {
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:${voicechat_api_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {

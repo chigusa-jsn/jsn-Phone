@@ -55,7 +55,16 @@ public final class PhoneClient {
     public static void open() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen instanceof PhoneScreen) return;
-        mc.setScreen(new PhoneScreen(phoneStack(mc.player)));
+        PhoneScreen ps = new PhoneScreen(phoneStack(mc.player));
+        mc.setScreen(ps);
+        // 電話が鳴っていたら、すぐ電話の画面へ
+        String st = callState();
+        if (st.equals("ringing") || st.equals("talking") || st.equals("calling")) ps.openById("call");
+    }
+
+    public static String callState() {
+        JsonObject c = CACHE.get("call");
+        return c != null && c.has("state") ? c.get("state").getAsString() : "";
     }
 
     /** 持っているスマホ（手に持っているもの優先） */
@@ -79,6 +88,19 @@ public final class PhoneClient {
             JsonObject cur = CACHE.get("messages");
             if (cur != null && cur.has("with") && o.has("with") && cur.get("with").getAsString().equals(o.get("with").getAsString())) app = "messages";
             else return;
+        }
+        o.addProperty("_at", System.currentTimeMillis());
+        if (app.equals("call")) {
+            String before = callState(), now = o.has("state") ? o.get("state").getAsString() : "";
+            Minecraft mc = Minecraft.getInstance();
+            // 通話がはじまった／終わった音
+            if (!before.equals("talking") && now.equals("talking")) mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BELL.value(), 1.4F, 0.7F));
+            if ((before.equals("talking") || before.equals("calling")) && now.equals("idle")) mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.8F, 0.8F));
+            // 着信：スマホを開いていたら電話の画面へ
+            if (now.equals("ringing") && !before.equals("ringing") && mc.screen instanceof PhoneScreen ps) {
+                CACHE.put(app, o);
+                ps.openById("call");
+            }
         }
         CACHE.put(app, o);
         if (Minecraft.getInstance().screen instanceof PhoneScreen s) s.onData(app, o);
@@ -107,8 +129,23 @@ public final class PhoneClient {
             if (mc.player != null && !phoneStack(mc.player).isEmpty()) open();
             else if (mc.player != null) mc.player.displayClientMessage(net.minecraft.network.chat.Component.literal("スマホを持っていないよ"), true);
         }
+        // 着信音（「プルル、プルル」をくり返す）／呼び出し音
+        if (mc.player != null && !mc.isPaused()) {
+            String st = callState();
+            long t = mc.player.tickCount;
+            if (st.equals("ringing") && (t % 40 == 0 || t % 40 == 6))
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_PLING.value(), t % 40 == 0 ? 1.5F : 1.25F, 0.9F));
+            if (st.equals("calling") && t % 60 == 0 && mc.screen instanceof PhoneScreen)
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BIT.value(), 1.0F, 0.4F));
+        }
         long now = System.currentTimeMillis();
         while (!BANNERS.isEmpty() && BANNERS.peek().until() < now) BANNERS.poll();
+    }
+
+    @SubscribeEvent
+    public static void logout(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) {
+        CACHE.clear();
+        BANNERS.clear();
     }
 
     /** 画面の右上に通知を出す */
