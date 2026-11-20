@@ -112,7 +112,7 @@ public class CallApp extends App {
             else {
                 // 声の波
                 for (int i = -5; i <= 5; i++) {
-                    int bh = 2 + (int) (Math.abs(Math.sin((s.ticks + pt) * 0.3 + i)) * 8);
+                    int bh = 2 + (int) (Math.abs(Math.sin(s.ticks * 0.3 + i)) * 8);
                     g.fill(cx + i * 5 - 1, y + 136 - bh, cx + i * 5 + 2, y + 136 + bh, 0xC080E0A0);
                 }
             }
