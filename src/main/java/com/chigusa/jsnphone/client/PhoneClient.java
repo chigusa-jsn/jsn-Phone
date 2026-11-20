@@ -152,6 +152,7 @@ public final class PhoneClient {
         BANNERS.clear();
         com.chigusa.jsnphone.client.camera.CameraMode.stop();
         PhotoCache.clear();
+        com.chigusa.jsnphone.client.music.MusicPlayer.stop();
     }
 
     /** 画面の右上に通知を出す */

@@ -265,7 +265,7 @@ public final class CameraMode {
         g.fill(w / 2 - 6, h / 2, w / 2 + 7, h / 2 + 1, 0x90FFFFFF);
         g.fill(w / 2, h / 2 - 6, w / 2 + 1, h / 2 + 7, 0x90FFFFFF);
         var f = mc.font;
-        String top = (selfie ? "🤳 自撮り" : "📷 カメラ") + (ZOOMS[zoom] > 1 && !selfie ? String.format("  ×%.1f", ZOOMS[zoom]) : "") + (shots > 0 ? "  §7撮った " + shots + "枚" : "");
+        String top = (selfie ? "◎ 自撮り" : "◎ カメラ") + (ZOOMS[zoom] > 1 && !selfie ? String.format("  ×%.1f", ZOOMS[zoom]) : "") + (shots > 0 ? "  §7撮った " + shots + "枚" : "");
         g.drawCenteredString(f, top, w / 2, m + 6, 0xFFFFFF);
         g.drawCenteredString(f, "§7左クリック：撮る  右クリック：自撮り  ホイール：ズーム  P・Esc：もどる", w / 2, h - m - 14, 0xFFFFFF);
         // 撮ったときの白い光

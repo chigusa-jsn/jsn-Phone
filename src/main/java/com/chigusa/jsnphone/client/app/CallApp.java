@@ -63,7 +63,7 @@ public class CallApp extends App {
             avatar(g, name, x + 6, yy + 2, 18);
             g.drawString(font, (on ? "" : "§7") + cut(name, w - 70), x + 28, yy + 3, 0xFFFFFF, false);
             g.drawString(font, on ? "§aオンライン" : "§8オフライン", x + 28, yy + 13, 0xFFFFFF, false);
-            if (on) s.button(g, x + w - 32, yy + 4, 26, 14, "📞", 0xFF30A050, mx, my, () -> {
+            if (on) s.button(g, x + w - 32, yy + 4, 26, 14, "☎", 0xFF30A050, mx, my, () -> {
                 request("call", "dial", obj("to", id));
                 s.sound(1.2F);
             });

@@ -25,6 +25,7 @@ public final class Apps {
             case "call" -> new CallApp();
             case "camera" -> new CameraApp();
             case "photos" -> new PhotosApp();
+            case "music" -> new MusicApp();
             case "bank" -> new BankApp();
             case "jsncraft" -> new CraftApp();
             default -> new SoonApp(id);

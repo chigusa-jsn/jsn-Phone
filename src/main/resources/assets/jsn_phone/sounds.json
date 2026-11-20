@@ -1,0 +1,66 @@
+{
+ "music.meadow": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/meadow",
+    "stream": true
+   }
+  ]
+ },
+ "music.casino": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/casino",
+    "stream": true
+   }
+  ]
+ },
+ "music.lofi": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/lofi",
+    "stream": true
+   }
+  ]
+ },
+ "music.musicbox": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/musicbox",
+    "stream": true
+   }
+  ]
+ },
+ "music.adventure": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/adventure",
+    "stream": true
+   }
+  ]
+ },
+ "music.dungeon": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/dungeon",
+    "stream": true
+   }
+  ]
+ },
+ "music.sunset": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/sunset",
+    "stream": true
+   }
+  ]
+ },
+ "music.parade": {
+  "sounds": [
+   {
+    "name": "jsn_phone:music/parade",
+    "stream": true
+   }
+  ]
+ }
+}

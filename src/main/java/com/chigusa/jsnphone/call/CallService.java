@@ -59,7 +59,7 @@ public final class CallService {
                 c.start = p.server.getTickCount();
                 CALLS.put(me, c);
                 CALLS.put(o.getUUID(), c);
-                PhoneServer.notify(o, "call", "📞 着信", p.getName().getString() + " から電話だよ（Pキーで出る）");
+                PhoneServer.notify(o, "call", "☎ 着信", p.getName().getString() + " から電話だよ（Pキーで出る）");
                 send(p);
                 send(o);
             }
@@ -67,7 +67,7 @@ public final class CallService {
                 Call c = CALLS.get(me);
                 if (c == null || !c.callee.equals(me) || c.talkStart >= 0) return;
                 c.talkStart = System.currentTimeMillis();
-                if (voiceLoaded()) Voice.join(c.caller, c.callee, "📞");
+                if (voiceLoaded()) Voice.join(c.caller, c.callee, "☎");
                 sendBoth(p, c);
             }
             case "hangup" -> end(p, me, true);
@@ -95,15 +95,15 @@ public final class CallService {
             // 出なかった／断られた／かけた人がやめた
             boolean declined = byUser && who.equals(c.callee);
             if (declined) {
-                if (caller != null) PhoneServer.notify(caller, "call", "📞 通話できなかった", d.name(c.callee.toString()) + " はいま出られないみたい");
+                if (caller != null) PhoneServer.notify(caller, "call", "☎ 通話できなかった", d.name(c.callee.toString()) + " はいま出られないみたい");
             } else {
-                if (callee != null) PhoneServer.notify(callee, "message", "📞 不在着信", d.name(c.caller.toString()) + " から電話があったよ");
-                if (caller != null && !byUser) PhoneServer.notify(caller, "call", "📞 応答なし", d.name(c.callee.toString()) + " は出なかったよ");
+                if (callee != null) PhoneServer.notify(callee, "message", "☎ 不在着信", d.name(c.caller.toString()) + " から電話があったよ");
+                if (caller != null && !byUser) PhoneServer.notify(caller, "call", "☎ 応答なし", d.name(c.callee.toString()) + " は出なかったよ");
             }
         } else {
             long sec = (System.currentTimeMillis() - c.talkStart) / 1000;
             String t = String.format("%d:%02d", sec / 60, sec % 60);
-            for (ServerPlayer sp : new ServerPlayer[]{caller, callee}) if (sp != null) PhoneServer.notify(sp, "call", "📞 通話終了", "通話時間 " + t);
+            for (ServerPlayer sp : new ServerPlayer[]{caller, callee}) if (sp != null) PhoneServer.notify(sp, "call", "☎ 通話終了", "通話時間 " + t);
         }
         for (UUID u : new UUID[]{c.caller, c.callee}) {
             ServerPlayer sp = p.server.getPlayerList().getPlayer(u);

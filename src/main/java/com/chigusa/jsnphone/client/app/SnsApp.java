@@ -114,7 +114,7 @@ public class SnsApp extends App {
             int ah = replyTo > 0 ? 42 : 32;
             g.fill(x, y + h - 22 - ah, x + w, y + h - 22 - (replyTo > 0 ? 10 : 0), 0xFF2A2A34);
             com.chigusa.jsnphone.client.PhotoCache.draw(g, attach, x + 4, y + h - 20 - ah, 40, 28 - 2, true);
-            g.drawString(font, "§7📷 写真をつける", x + 48, y + h - 14 - ah, 0xFFFFFF);
+            g.drawString(font, "§7［写真］をつける", x + 48, y + h - 14 - ah, 0xFFFFFF);
             g.drawString(font, "§c✕", x + w - 10, y + h - 14 - ah, 0xFFFFFF);
             s.hot(x + w - 12, y + h - 16 - ah, 12, 12, () -> attach = "");
         }

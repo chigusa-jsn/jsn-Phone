@@ -1,0 +1,50 @@
+[
+ {
+  "id": "meadow",
+  "title": "はじまりの草原",
+  "genre": "ドット絵風",
+  "seconds": 112.2
+ },
+ {
+  "id": "casino",
+  "title": "夜のカジノ",
+  "genre": "ジャズ",
+  "seconds": 132.7
+ },
+ {
+  "id": "lofi",
+  "title": "雨の日のローファイ",
+  "genre": "ローファイ",
+  "seconds": 98.5
+ },
+ {
+  "id": "musicbox",
+  "title": "星空のオルゴール",
+  "genre": "オルゴール",
+  "seconds": 105.4
+ },
+ {
+  "id": "adventure",
+  "title": "冒険の朝",
+  "genre": "オーケストラ風",
+  "seconds": 126.4
+ },
+ {
+  "id": "dungeon",
+  "title": "深いダンジョン",
+  "genre": "ダーク",
+  "seconds": 106.8
+ },
+ {
+  "id": "sunset",
+  "title": "海辺の夕焼け",
+  "genre": "ボサノバ",
+  "seconds": 102.5
+ },
+ {
+  "id": "parade",
+  "title": "ドット絵のパレード",
+  "genre": "チップチューン",
+  "seconds": 98.5
+ }
+]

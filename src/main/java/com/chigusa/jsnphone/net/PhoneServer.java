@@ -115,7 +115,7 @@ public final class PhoneServer {
             d.setDirty();
             ServerPlayer other = online(p.server, to);
             if (other != null) {
-                notify(other, "message", p.getName().getString(), text.isEmpty() ? "📷 写真" : text);
+                notify(other, "message", p.getName().getString(), text.isEmpty() ? "［写真］" : text);
                 send(other, "messages_push", thread(d, other.getStringUUID(), me));
             }
             send(p, "messages", thread(d, me, to));
@@ -153,7 +153,7 @@ public final class PhoneServer {
             j.addProperty("uuid", (String) r[0]);
             j.addProperty("name", d.name((String) r[0]));
             PhoneData.Message lm = (PhoneData.Message) r[1];
-            j.addProperty("last", lm.text.isEmpty() && lm.photo != null ? "📷 写真" : lm.text);
+            j.addProperty("last", lm.text.isEmpty() && lm.photo != null ? "［写真］" : lm.text);
             j.addProperty("time", ((PhoneData.Message) r[1]).time);
             j.addProperty("unread", (int) r[2]);
             j.addProperty("online", online(p.server, (String) r[0]) != null);

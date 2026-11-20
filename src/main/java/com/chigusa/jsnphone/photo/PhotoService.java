@@ -59,7 +59,7 @@ public final class PhotoService {
         u.next++;
         if (u.buf.size() > MAX_BYTES) {
             UPLOADS.remove(p.getUUID());
-            PhoneServer.notify(p, "photo", "📷 写真", "写真が大きすぎて保存できなかった");
+            PhoneServer.notify(p, "photo", "［写真］", "写真が大きすぎて保存できなかった");
             return;
         }
         if (u.next < u.total) return;
@@ -71,7 +71,7 @@ public final class PhotoService {
         PhoneData d = PhoneData.get(p.server);
         long mine = d.c.photos.stream().filter(ph -> ph.owner.equals(p.getStringUUID())).count();
         if (mine >= MAX_PER_PLAYER) {
-            PhoneServer.notify(p, "photo", "📷 写真がいっぱい", "写真アプリで古い写真を消してね（" + MAX_PER_PLAYER + "枚まで）");
+            PhoneServer.notify(p, "photo", "写真がいっぱい", "写真アプリで古い写真を消してね（" + MAX_PER_PLAYER + "枚まで）");
             return;
         }
         byte[] bytes = u.buf.toByteArray();

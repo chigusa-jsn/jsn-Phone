@@ -86,7 +86,7 @@ public class PhotosApp extends App {
         String c = photos.size() + " / " + num(o, "max");
         header(g, x, y, w, title(), mx, my);
         g.drawString(font, "§7" + c, x + w - 4 - font.width(c), y + 5, 0xFFFFFF, false);
-        s.button(g, x + w - 30, y + h - 30, 26, 26, "📷", s.accent(), mx, my, CameraMode::startSoon);
+        s.button(g, x + w - 30, y + h - 30, 26, 26, "◎", s.accent(), mx, my, CameraMode::startSoon);
     }
 
     private void detail(GuiGraphics g, int x, int y, int w, int h, int mx, int my, JsonObject ph) {
@@ -97,7 +97,7 @@ public class PhotosApp extends App {
         int yy = iy + ih + 6;
         g.drawString(font, "§f" + F.format(Instant.ofEpochMilli(lng(ph, "time"))) + " §8" + PhoneTime.ago(lng(ph, "time")), x + 6, yy, 0xFFFFFF, false);
         yy += 11;
-        for (var l : wrap("§7📍 " + str(ph, "place"), w - 12)) {
+        for (var l : wrap("§7場所：" + str(ph, "place"), w - 12)) {
             g.drawString(font, l, x + 6, yy, 0xFFFFFF, false);
             yy += 10;
         }

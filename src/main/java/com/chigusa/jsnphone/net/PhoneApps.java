@@ -62,7 +62,7 @@ public final class PhoneApps {
                     msg = d.name(to) + " に " + text + " を送ったよ";
                     ServerPlayer o = PhoneServer.online(p.server, to);
                     if (o != null) {
-                        PhoneServer.notify(o, "bank", "💰 入金", p.getName().getString() + " から " + text + (note.isEmpty() ? "" : "「" + note + "」"));
+                        PhoneServer.notify(o, "bank", "◆ 入金", p.getName().getString() + " から " + text + (note.isEmpty() ? "" : "「" + note + "」"));
                         bankState(o, d, null, null);
                     }
                 }
