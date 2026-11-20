@@ -173,6 +173,7 @@ public final class CallService {
 
     @SubscribeEvent
     public static void logout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer sp) com.chigusa.jsnphone.photo.PhotoService.logout(sp);
         if (event.getEntity() instanceof ServerPlayer p && CALLS.containsKey(p.getUUID())) end(p, p.getUUID(), true);
     }
 

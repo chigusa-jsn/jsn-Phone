@@ -40,6 +40,7 @@ public final class PhoneServer {
             case "friends" -> friends(p, d, action, in);
             case "memo" -> memo(p, d, action, in);
             case "settings" -> settings(p, d, action, in);
+            case "photos" -> com.chigusa.jsnphone.photo.PhotoService.handle(p, d, action, in);
             default -> PhoneApps.handle(p, d, app, action, in);
         }
     }
@@ -99,11 +100,14 @@ public final class PhoneServer {
         if (action.equals("send")) {
             String to = in.has("to") ? in.get("to").getAsString() : "";
             String text = clip(in.has("text") ? in.get("text").getAsString() : "", 200);
-            if (to.isEmpty() || text.isEmpty() || to.equals(me) || !d.c.names.containsKey(to)) return;
+            String photo = in.has("photo") ? in.get("photo").getAsString() : null;
+            if (photo != null && com.chigusa.jsnphone.photo.PhotoService.find(d, photo) == null) photo = null;
+            if (to.isEmpty() || (text.isEmpty() && photo == null) || to.equals(me) || !d.c.names.containsKey(to)) return;
             PhoneData.Thread t = d.c.threads.computeIfAbsent(PhoneData.threadKey(me, to), k -> new PhoneData.Thread());
             PhoneData.Message m = new PhoneData.Message();
             m.from = me;
             m.text = text;
+            m.photo = photo;
             m.time = System.currentTimeMillis();
             t.messages.add(m);
             while (t.messages.size() > PhoneData.MAX_MESSAGES) t.messages.remove(0);
@@ -111,7 +115,7 @@ public final class PhoneServer {
             d.setDirty();
             ServerPlayer other = online(p.server, to);
             if (other != null) {
-                notify(other, "message", p.getName().getString(), text);
+                notify(other, "message", p.getName().getString(), text.isEmpty() ? "📷 写真" : text);
                 send(other, "messages_push", thread(d, other.getStringUUID(), me));
             }
             send(p, "messages", thread(d, me, to));
@@ -148,7 +152,8 @@ public final class PhoneServer {
             JsonObject j = new JsonObject();
             j.addProperty("uuid", (String) r[0]);
             j.addProperty("name", d.name((String) r[0]));
-            j.addProperty("last", ((PhoneData.Message) r[1]).text);
+            PhoneData.Message lm = (PhoneData.Message) r[1];
+            j.addProperty("last", lm.text.isEmpty() && lm.photo != null ? "📷 写真" : lm.text);
             j.addProperty("time", ((PhoneData.Message) r[1]).time);
             j.addProperty("unread", (int) r[2]);
             j.addProperty("online", online(p.server, (String) r[0]) != null);
@@ -194,6 +199,7 @@ public final class PhoneServer {
                 j.addProperty("me", m.from.equals(me));
                 j.addProperty("text", m.text);
                 j.addProperty("time", m.time);
+                if (m.photo != null) j.addProperty("photo", m.photo);
                 msgs.add(j);
             }
             long otherRead = t.read.getOrDefault(with, 0L);
@@ -209,12 +215,15 @@ public final class PhoneServer {
         switch (action) {
             case "post" -> {
                 String text = clip(in.has("text") ? in.get("text").getAsString() : "", 140);
-                if (text.isEmpty()) break;
+                String photo = in.has("photo") ? in.get("photo").getAsString() : null;
+                if (photo != null && com.chigusa.jsnphone.photo.PhotoService.find(d, photo) == null) photo = null;
+                if (text.isEmpty() && photo == null) break;
                 PhoneData.Post post = new PhoneData.Post();
                 post.id = d.c.nextPost++;
                 post.author = me;
                 post.name = p.getName().getString();
                 post.text = text;
+                post.photo = photo;
                 post.time = System.currentTimeMillis();
                 post.replyTo = in.has("reply") ? in.get("reply").getAsLong() : 0;
                 d.c.posts.add(0, post);
@@ -259,6 +268,7 @@ public final class PhoneServer {
             j.addProperty("liked", q.likes.contains(me));
             j.addProperty("mine", q.author.equals(me));
             j.addProperty("reply", q.replyTo);
+            if (q.photo != null) j.addProperty("photo", q.photo);
             a.add(j);
         }
         o.add("posts", a);

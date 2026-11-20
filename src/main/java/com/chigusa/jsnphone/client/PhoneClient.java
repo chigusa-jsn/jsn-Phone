@@ -126,6 +126,10 @@ public final class PhoneClient {
     public static void tick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         while (OPEN.consumeClick()) {
+            if (com.chigusa.jsnphone.client.camera.CameraMode.active()) {
+                com.chigusa.jsnphone.client.camera.CameraMode.backToPhone();
+                continue;
+            }
             if (mc.player != null && !phoneStack(mc.player).isEmpty()) open();
             else if (mc.player != null) mc.player.displayClientMessage(net.minecraft.network.chat.Component.literal("スマホを持っていないよ"), true);
         }
@@ -146,6 +150,8 @@ public final class PhoneClient {
     public static void logout(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) {
         CACHE.clear();
         BANNERS.clear();
+        com.chigusa.jsnphone.client.camera.CameraMode.stop();
+        PhotoCache.clear();
     }
 
     /** 画面の右上に通知を出す */

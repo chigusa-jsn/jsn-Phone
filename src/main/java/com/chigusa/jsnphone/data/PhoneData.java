@@ -21,13 +21,14 @@ public class PhoneData extends SavedData {
     private static final Gson GSON = new GsonBuilder().create();
     public static final int MAX_POSTS = 300, MAX_NEWS = 200, MAX_MESSAGES = 200, MAX_MEMOS = 50;
 
-    public static class Message { public String from; public String text; public long time; }
+    public static class Message { public String from; public String text; public long time; public String photo; }
     public static class Thread { public List<Message> messages = new ArrayList<>(); public Map<String, Long> read = new HashMap<>(); }
     public static class Post {
         public long id; public String author; public String name; public String text; public long time;
-        public Set<String> likes = new LinkedHashSet<>(); public long replyTo;
+        public Set<String> likes = new LinkedHashSet<>(); public long replyTo; public String photo;
     }
     public static class News { public String text; public String kind; public long time; public String player; }
+    public static class Photo { public String id; public String owner; public long time; public String place; public int w, h; }
     public static class BankLog { public String with; public long amount; public boolean in; public long time; public String note; }
     public static class Settings { public int theme = 0; public int wallpaper = 0; public boolean share = true; public boolean notify = true; }
 
@@ -44,6 +45,7 @@ public class PhoneData extends SavedData {
         public Map<String, String> names = new HashMap<>();
         public Map<String, Long> newsRead = new HashMap<>();
         public Map<String, List<BankLog>> bank = new HashMap<>();
+        public List<Photo> photos = new ArrayList<>();
     }
 
     public Content c = new Content();

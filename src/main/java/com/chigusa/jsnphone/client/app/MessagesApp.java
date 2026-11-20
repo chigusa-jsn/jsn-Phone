@@ -141,20 +141,27 @@ public class MessagesApp extends App {
         // 下から積む
         int bottom = y + h - 22, maxW = w * 2 / 3;
         int total = 0;
-        for (JsonElement e : msgs) total += wrap(str(e.getAsJsonObject(), "text"), maxW - 8).size() * 9 + 12;
+        for (JsonElement e : msgs) total += bubbleH(e.getAsJsonObject(), maxW) + 6;
         contentH = total + 24;
         int yy = bottom - total + scroll;
         for (int i = 0; i < msgs.size(); i++) {
             JsonObject m = msgs.get(i).getAsJsonObject();
             boolean me = bool(m, "me");
-            List<FormattedCharSequence> lines = wrap(str(m, "text"), maxW - 8);
+            String text = str(m, "text"), photo = str(m, "photo");
+            List<FormattedCharSequence> lines = text.isEmpty() ? List.of() : wrap(text, maxW - 8);
             int bw = 0;
             for (FormattedCharSequence l : lines) bw = Math.max(bw, font.width(l));
             bw += 8;
-            int bh = lines.size() * 9 + 6;
+            if (!photo.isEmpty()) bw = maxW;
+            int bh = bubbleH(m, maxW);
             int bx = me ? x + w - bw - 4 : x + 4;
             g.fill(bx, yy, bx + bw, yy + bh, me ? s.accent() : 0xFF34343C);
             int ly = yy + 3;
+            if (!photo.isEmpty()) {
+                int ph = photoH(photo, maxW);
+                com.chigusa.jsnphone.client.PhotoCache.draw(g, photo, bx + 2, yy + 2, bw - 4, ph, false);
+                ly += ph + 2;
+            }
             for (FormattedCharSequence l : lines) {
                 g.drawString(font, l, bx + 4, ly, 0xFFFFFF, false);
                 ly += 9;
@@ -170,6 +177,17 @@ public class MessagesApp extends App {
         if (msgs.isEmpty()) g.drawCenteredString(font, "§7最初のメッセージを送ってみよう", x + w / 2, y + h / 2, 0xFFFFFF);
         g.fill(x, y + h - 22, x + w, y + h, 0xFF202028);
         s.button(g, x + w - 28, y + h - 18, 24, 14, "送信", s.accent(), mx, my, this::enter);
+    }
+
+    private int photoH(String photo, int maxW) {
+        return Math.round((maxW - 4) * com.chigusa.jsnphone.client.PhotoCache.aspect(photo));
+    }
+
+    private int bubbleH(JsonObject m, int maxW) {
+        String text = str(m, "text"), photo = str(m, "photo");
+        int h = text.isEmpty() ? 0 : wrap(text, maxW - 8).size() * 9;
+        if (!photo.isEmpty()) h += photoH(photo, maxW) + (text.isEmpty() ? -2 : 2);
+        return h + 6;
     }
 
     @Override

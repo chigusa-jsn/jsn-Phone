@@ -15,6 +15,14 @@ public class SnsApp extends App {
     private EditBox box;
     private long replyTo;
     private String replyName = "";
+    /** 載せる写真（写真アプリから来たとき） */
+    private String attach = "";
+
+    public SnsApp() {}
+
+    public SnsApp(String photo) {
+        attach = photo == null ? "" : photo;
+    }
 
     @Override
     public String title() {
@@ -33,8 +41,11 @@ public class SnsApp extends App {
 
     @Override
     public boolean enter() {
-        if (box == null || box.getValue().isBlank()) return false;
-        request("sns", "post", replyTo > 0 ? obj("text", box.getValue(), "reply", replyTo) : obj("text", box.getValue()));
+        if (box == null || (box.getValue().isBlank() && attach.isEmpty())) return false;
+        JsonObject d = replyTo > 0 ? obj("text", box.getValue(), "reply", replyTo) : obj("text", box.getValue());
+        if (!attach.isEmpty()) d.addProperty("photo", attach);
+        request("sns", "post", d);
+        attach = "";
         box.setValue("");
         replyTo = 0;
         scroll = 0;
@@ -54,7 +65,9 @@ public class SnsApp extends App {
         for (JsonElement e : arr(o, "posts")) {
             JsonObject p = e.getAsJsonObject();
             List<FormattedCharSequence> lines = wrap(str(p, "text"), w - 34);
-            int ph = 24 + lines.size() * 9 + 12;
+            String photo = str(p, "photo");
+            int pw = w - 30, phH = photo.isEmpty() ? 0 : Math.round(pw * com.chigusa.jsnphone.client.PhotoCache.aspect(photo)) + 4;
+            int ph = 24 + lines.size() * 9 + 12 + phH + (lng(p, "reply") > 0 ? 9 : 0);
             if (yy + ph > y && yy < y + h) {
                 avatar(g, str(p, "name"), x + 4, yy + 4, 18);
                 g.drawString(font, "§l" + cut(str(p, "name"), w - 80), x + 26, yy + 4, 0xFFFFFF);
@@ -68,6 +81,10 @@ public class SnsApp extends App {
                 for (FormattedCharSequence l : lines) {
                     g.drawString(font, l, x + 26, ly, 0xFFFFFF, false);
                     ly += 9;
+                }
+                if (!photo.isEmpty()) {
+                    com.chigusa.jsnphone.client.PhotoCache.draw(g, photo, x + 26, ly + 1, pw, phH - 4, false);
+                    ly += phH;
                 }
                 long id = lng(p, "id");
                 boolean liked = bool(p, "liked");
@@ -93,6 +110,14 @@ public class SnsApp extends App {
         if (arr(o, "posts").isEmpty()) g.drawCenteredString(font, "§7まだつぶやきはないよ", x + w / 2, y + 60, 0xFFFFFF);
         contentH = yy + scroll - y + 24;
         g.fill(x, y + h - 22, x + w, y + h, 0xFF202028);
+        if (!attach.isEmpty()) {
+            int ah = replyTo > 0 ? 42 : 32;
+            g.fill(x, y + h - 22 - ah, x + w, y + h - 22 - (replyTo > 0 ? 10 : 0), 0xFF2A2A34);
+            com.chigusa.jsnphone.client.PhotoCache.draw(g, attach, x + 4, y + h - 20 - ah, 40, 28 - 2, true);
+            g.drawString(font, "§7📷 写真をつける", x + 48, y + h - 14 - ah, 0xFFFFFF);
+            g.drawString(font, "§c✕", x + w - 10, y + h - 14 - ah, 0xFFFFFF);
+            s.hot(x + w - 12, y + h - 16 - ah, 12, 12, () -> attach = "");
+        }
         if (replyTo > 0) {
             g.fill(x, y + h - 32, x + w, y + h - 22, 0xFF2A2A34);
             g.drawString(font, "§7↪ " + cut(replyName, w - 40) + " に返信", x + 4, y + h - 31, 0xFFFFFF);
