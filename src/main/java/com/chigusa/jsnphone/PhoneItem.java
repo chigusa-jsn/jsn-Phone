@@ -27,6 +27,8 @@ public class PhoneItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> lines, TooltipFlag flag) {
         lines.add(Component.literal("右クリック、または Pキーで開く").withStyle(ChatFormatting.GRAY));
-        lines.add(Component.literal("持ち物に入っていれば、メッセージの通知が届く").withStyle(ChatFormatting.DARK_GRAY));
+        lines.add(Component.literal("持ち物か「スマホ」の枠に入れておくと、通知が届く").withStyle(ChatFormatting.DARK_GRAY));
+        lines.add(Component.literal("死んでもなくならない（生き返ると戻ってくる）").withStyle(ChatFormatting.DARK_GRAY));
+        lines.add(Component.literal("中身はスマホではなく人ごと：ほかのスマホに替えても同じデータ").withStyle(ChatFormatting.DARK_GRAY));
     }
 }

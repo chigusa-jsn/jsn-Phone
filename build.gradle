@@ -37,9 +37,12 @@ neoForge {
 }
 
 repositories {
+    // 装飾品の枠（Curios API）：スマホを入れる「スマホ」の枠（なくても動く）
+    maven { url = "https://maven.theillusivec4.top/" }
 }
 
 dependencies {
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 }
 
 tasks.withType(JavaCompile).configureEach {

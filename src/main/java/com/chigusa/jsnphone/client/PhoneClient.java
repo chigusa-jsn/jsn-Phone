@@ -60,11 +60,7 @@ public final class PhoneClient {
 
     /** 持っているスマホ（手に持っているもの優先） */
     public static ItemStack phoneStack(Player p) {
-        if (p == null) return ItemStack.EMPTY;
-        if (p.getMainHandItem().is(JsnPhone.PHONE.get())) return p.getMainHandItem();
-        if (p.getOffhandItem().is(JsnPhone.PHONE.get())) return p.getOffhandItem();
-        for (ItemStack s : p.getInventory().items) if (s.is(JsnPhone.PHONE.get())) return s;
-        return ItemStack.EMPTY;
+        return com.chigusa.jsnphone.PhoneHolder.find(p);
     }
 
     public static void request(String app, String action, JsonObject data) {

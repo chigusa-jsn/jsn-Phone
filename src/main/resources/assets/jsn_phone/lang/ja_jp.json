@@ -1,5 +1,7 @@
 {
   "item.jsn_phone.smartphone": "スマートフォン",
   "key.categories.jsn_phone": "jsn-Phone",
-  "key.jsn_phone.open": "スマホを開く"
+  "key.jsn_phone.open": "スマホを開く",
+  "curios.identifier.phone": "スマホ",
+  "curios.modifiers.phone": "スマホに入れたとき："
 }

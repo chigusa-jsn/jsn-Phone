@@ -1,0 +1,6 @@
+{
+  "size": 1,
+  "order": 160,
+  "icon": "jsn_phone:slot/phone",
+  "drop_rule": "ALWAYS_KEEP"
+}
